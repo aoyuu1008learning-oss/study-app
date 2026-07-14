@@ -3,11 +3,10 @@ import pandas as pd
 import datetime
 
 # --- 1. アプリの初期設定 ---
+# --- 1. アプリの初期設定 ---
 if 'study_data' not in st.session_state:
-    st.session_state.study_data = pd.DataFrame([
-        {"日付": "7/11", "科目": "算数", "時間(分)": 60},
-        {"日付": "7/12", "科目": "国語", "時間(分)": 45},
-        {"日付": "7/13", "科目": "理科", "時間(分)": 90},
+    # 中身を空っぽの表にする
+    st.session_state.study_data = pd.DataFrame(columns=["日付", "科目", "時間(分)"])
     ])
 
 if 'handwriting_status' not in st.session_state:
