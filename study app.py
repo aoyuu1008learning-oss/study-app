@@ -3,11 +3,9 @@ import pandas as pd
 import datetime
 
 # --- 1. アプリの初期設定 ---
-# --- 1. アプリの初期設定 ---
 if 'study_data' not in st.session_state:
     # 中身を空っぽの表にする
     st.session_state.study_data = pd.DataFrame(columns=["日付", "科目", "時間(分)"])
-    ])
 
 if 'handwriting_status' not in st.session_state:
     st.session_state.handwriting_status = "未提出"
@@ -56,7 +54,7 @@ if user_mode == "弟くん（学習モード）":
         st.write(f"いまの状態： **{st.session_state.handwriting_status}**")
         uploaded_file = st.file_uploader("写真をアップロードしてね", type=["png", "jpg", "jpeg"])
         if uploaded_file is not None:
-            st.image(uploaded_file, caption='アップロードしたノート', use_column_width=True)
+            st.image(uploaded_file, caption='アップロードしたノート', use_container_width=True)
             if st.button("家族にチェックをおねがいする"):
                 st.session_state.handwriting_status = "判定待ち"
                 st.info("家族にお願いしたよ！判定をまとう。")
@@ -73,8 +71,11 @@ if user_mode == "弟くん（学習モード）":
     with menu[3]:
         st.subheader("これまでの勉強時間の合計")
         df = st.session_state.study_data
-        df_grouped = df.groupby("日付")["時間(分)"].sum().reset_index()
-        st.bar_chart(df_grouped.set_index("日付"))
+        if not df.empty:
+            df_grouped = df.groupby("日付")["時間(分)"].sum().reset_index()
+            st.bar_chart(df_grouped.set_index("日付"))
+        else:
+            st.write("まだ勉強時間の記録がありません。")
         st.write("▼ これまでの細かい記録一覧")
         st.dataframe(df)
 
